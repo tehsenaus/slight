@@ -14,6 +14,8 @@ class Home extends Component {
   render() {
     const {handA, layA, dispatch} = this.props;
     const actions = bindActionCreators(HomeActions, dispatch);
+    const done = layA.every(track => track.length === 3);
+
     return (
       <main>
         <h1>Slight</h1>
@@ -41,12 +43,13 @@ class Home extends Component {
 
         <center>
         { handA.map(card =>
-          <Card card={ card } draggable="true" onDragStart={ e =>
-            (console.log('ds'), e.dataTransfer.setData('card', card)) } />
+          <Card card={ card } draggable="true"
+            onDragStart={ e => e.dataTransfer.setData('card', card) } />
         ) }
 
         { !handA.length &&
-          <button className="btn btn-default" onClick={ () => actions.draw() }>Draw</button>
+          <button className="btn btn-default" onClick={ () => actions.draw() }>
+            { done ? 'Play Again' : 'Draw' }</button>
         }
         </center>
 

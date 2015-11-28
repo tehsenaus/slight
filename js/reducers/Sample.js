@@ -16,6 +16,9 @@ export default function(state = defaultState, action) {
   switch (action.type) {
     case "slight.draw":
       if ( state['hand' + action.hand].length ) return state;
+      if ( state['lay' + action.hand].every(track => track.length === 3) ) {
+      	state = defaultState;
+      }
 
       var draw = state.deck.slice(0,3);
       return {...state,
