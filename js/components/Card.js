@@ -20,7 +20,7 @@ export default class Card extends Component {
     	[c,s] = card;
 
     return (
-      <img {...this.props} className="card" src={"/images/cards/"+(
+      <img {...this.props} className="card" src={"./images/cards/"+(
         CARD_NAMES[c] || c
       )+"_of_"+SUIT_NAMES[s]+".png"} />
     );
