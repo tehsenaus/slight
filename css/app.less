@@ -1,0 +1,56 @@
+body {
+	padding: 2em;
+	text-align: center;
+}
+
+h1 {
+	margin-bottom: 1em;
+}
+
+.card {
+	width: 10em;
+	height: 14.5em;
+	display: inline-block;
+	vertical-align: middle;
+
+	+ .card {
+		margin-left: -7em;
+	}
+
+	&.placeholder {
+		background: white;
+		border-radius: 1em;
+		border: 4px dashed grey;
+	}
+}
+
+
+.slightLay {
+	list-style: none;
+	text-indent: 0;
+	padding: 0;
+	text-align: center;
+
+	li {
+		min-height: 13em;
+	}
+
+	.card + .card {
+		margin-top: -11em;
+		margin-left: 0;
+	}
+
+	.card + .card.placeholder {
+		background: transparent;
+		opacity: 0.5;
+	}
+	.card + .card + .card.placeholder {
+		opacity: 0.25;
+	}
+
+	.trickName {
+		text-align: center;
+		text-transform: uppercase;
+		font-size: 0.875em;
+	}
+}
