@@ -6,8 +6,13 @@ body {
 h1 {
 	margin-bottom: 1em;
 }
+h3 {
+	text-transform: uppercase;
+	font-size: 1.2em;
+}
 
 .card {
+	font-size: 1.75vw;
 	width: 10em;
 	height: 14.5em;
 	display: inline-block;
@@ -20,10 +25,9 @@ h1 {
 	&.placeholder {
 		background: white;
 		border-radius: 1em;
-		border: 4px dashed grey;
+		border: 0.33em dashed grey;
 	}
 }
-
 
 .slightLay {
 	list-style: none;
@@ -32,13 +36,17 @@ h1 {
 	text-align: center;
 
 	li {
-		min-height: 13em;
+		
+	}
+
+	.card {
+		font-size: 1.25vw;
 	}
 
 	.card + .card {
 		margin-top: -11em;
 		margin-left: 0;
-	}
+	}	
 
 	.card + .card.placeholder {
 		background: transparent;
@@ -53,4 +61,11 @@ h1 {
 		text-transform: uppercase;
 		font-size: 0.875em;
 	}
+}
+
+.opponent .card {
+	font-size: 1vw;
+}
+.opponent .slightLay .card {
+	font-size: 0.8vw;
 }

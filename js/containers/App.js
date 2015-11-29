@@ -17,7 +17,7 @@ export default React.createClass({
         </Provider>
 
         {/* only renders when running in DEV mode */
-          renderDevTools(store)
+          //renderDevTools(store)
         }
       </div>
     );

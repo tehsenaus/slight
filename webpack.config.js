@@ -9,8 +9,7 @@ var devFlagPlugin = new webpack.DefinePlugin({
 
 module.exports = {
   entry: (debug ? [
-    'webpack-dev-server/client?http://localhost:3000',
-    'webpack/hot/only-dev-server'
+    'webpack-hot-middleware/client'
   ] : []).concat([
     './js/index.js'
   ]),

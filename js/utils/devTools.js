@@ -6,8 +6,8 @@ export function renderDevTools(store) {
     let SliderMonitor = require('redux-slider-monitor');
 
     return (
-      <DebugPanel left right bottom>
-        <DevTools store={store} monitor={SliderMonitor} />
+      <DebugPanel top right bottom>
+        <DevTools store={store} monitor={LogMonitor} />
       </DebugPanel>
     );
   }

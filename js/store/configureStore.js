@@ -2,6 +2,7 @@ import {createStore, applyMiddleware, combineReducers, compose} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import {devTools, persistState} from 'redux-devtools';
 import * as reducers from '../reducers/index';
+import {socket} from '../utils/socket';
 
 let createStoreWithMiddleware;
 
@@ -19,5 +20,13 @@ if (__DEV__) {
 const rootReducer = combineReducers(reducers);
 
 export default function configureStore(initialState) {
-  return createStoreWithMiddleware(rootReducer, initialState);
+  var store = createStoreWithMiddleware(rootReducer, initialState);
+
+  socket.on('gameAction', (action, callback) => {
+  	console.log('action from remote', action, callback);
+  	store.dispatch(action);
+    if ( callback ) callback();
+  });
+
+  return store;
 }

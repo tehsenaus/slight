@@ -1,11 +1,6 @@
 
-const CARDS = "A23456789TJQK".split(''),
-  SUITS = "DHSC".split(''),
-  DECK = cprod(CARDS, SUITS).map(c => c.join(''));
-
-
 const defaultState = {
-  deck: shuffle(DECK),
+  deck: [],
   handA: [],
   handB: [],
   layA: [[],[],[],[],[]],
@@ -14,6 +9,11 @@ const defaultState = {
 
 export default function(state = defaultState, action) {
   switch (action.type) {
+    case "game.start":
+      return {...state,
+        deck: action.deck
+      };
+
     case "slight.draw":
       if ( state['hand' + action.hand].length ) return state;
       if ( state['lay' + action.hand].every(track => track.length === 3) ) {
@@ -42,21 +42,4 @@ export default function(state = defaultState, action) {
   }
 }
 
-
-function shuffle(o){
-    o = o.slice(0);
-    for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-    return o;
-};
-function cprod() {
-  return Array.prototype.reduce.call(arguments, function(a, b) {
-    var ret = [];
-    a.forEach(function(a) {
-      b.forEach(function(b) {
-        ret.push(a.concat([b]));
-      });
-    });
-    return ret;
-  }, [[]]);
-}
 

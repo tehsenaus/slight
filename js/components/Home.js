@@ -5,93 +5,66 @@ import * as HomeActions from '../actions/HomeActions';
 import * as jquery from 'jquery';
 import bootstrap from "bootstrap-webpack";
 import styles from 'style!css!less!../../css/app.less';
+import SlightLay from './SlightLay';
 import Card from './Card';
-
-
 
 
 class Home extends Component {
   render() {
-    const {handA, layA, dispatch} = this.props;
+    const {dispatch, local} = this.props;
     const actions = bindActionCreators(HomeActions, dispatch);
-    const done = layA.every(track => track.length === 3);
+
+    const hand = this.props['hand' + local.player] || this.props.handA,
+      lay = this.props['lay' + local.player] || this.props.layA,
+      otherPlayer = local.player === 'A' ? 'B' : 'A',
+      otherHand = this.props['hand' + otherPlayer] || this.props.handB,
+      otherLay = this.props['lay' + otherPlayer] || this.props.layB;
+
+    const done = lay.concat(otherLay).every(track => track.length === 3);
 
     return (
       <main>
         <h1>Slight</h1>
-        <ul className="slightLay row">
-          <li className="col-md-1"></li>
-          { layA.map((track,i) =>
-            <li className="col-md-2"
-                onDragOver={ e => e.preventDefault() }
-                onDrop={ e => actions.lay(e.dataTransfer.getData('card'), i) }
-            >
-              { track.map(card =>
-                <Card card={ card } />
-              ) }
-              { [1,1,1].slice(track.length).map(() =>
-                <div className="card placeholder"></div>
-              ) }
+        <SlightLay {...{done, lay, otherLay}} onLay={ (card, i) => actions.lay(card, i, local.player) } />
 
-              <p className="trickName">
-                { track.length === 3 ? evalTrick(track) : track.length + '/' + 3 }
-              </p>
-            </li>
-          ) }
-          <li className="col-md-1"></li>
-        </ul>
+        <div className="row">
 
-        <center>
-        { handA.map(card =>
-          <Card card={ card } draggable="true"
-            onDragStart={ e => e.dataTransfer.setData('card', card) } />
-        ) }
+          <div className="col-xs-8 opponent">
+            <h3>Opponent</h3>
 
-        { !handA.length &&
-          <button className="btn btn-default" onClick={ () => actions.draw() }>
-            { done ? 'Play Again' : 'Draw' }</button>
-        }
-        </center>
+            <SlightLay done={done} lay={otherLay} otherLay={lay} faceDown={!done} />
+
+            { otherHand.map((card,i) =>
+              <Card faceDown="true" card={ card } key={ i }></Card>
+            ) }
+
+          </div>
+
+          <div className="col-xs-4">
+
+            { hand.map(card =>
+              <Card card={ card } draggable="true"
+                onDragStart={ e => e.dataTransfer.setData('card', card) } />
+            ) }
+
+            { local.player ? (!hand.length &&
+              <button className="btn btn-default" onClick={ () => actions.draw(local.player) }>
+                { done ? 'Play Again' : 'Draw' }</button>
+              ) : (
+                'Waiting for partner...'
+              ) 
+            }
+
+          </div>
+        </div>
 
       </main>
     );
   }
 }
 
-export default connect(state => state.Sample)(Home)
+export default connect(state => ({...state.Sample, local: state.LocalGameState}))(Home)
 
-const NUMBERS = {
-  A: 1,
-  T: 10,
-  J: 11,
-  Q: 12,
-  K: 13
-}, MAX = 12 * 13 * 14, HANDS = {
-  'high card': MAX * 1,
-  'pair': MAX * 2,
-  'flush': MAX * 3,
-  'straight': MAX * 4,
-  'trips': MAX * 5,
-  'straight flush': MAX * 6
-};
-
-function evalTrick(cs) {
-  var suits = cs.map(([c,s]) => s),
-    numbers = cs.map(([c,s]) => (NUMBERS[c] || +c)).sort((a,b) => a - b);
-
-  if ( numbers.every(n => n === numbers[0]) ) {
-    return 'trips';
-  } else if ( numbers[0] === numbers[1] || numbers[1] === numbers[2] ) {
-    return 'pair';
-  }
-
-  var flush = suits.every(s => s === suits[0]);
-  if ( numbers[0] + 2 === numbers[2] || numbers[0] === NUMBERS.A && numbers[1] === NUMBERS.Q ) {
-    return 'straight' + (flush ? ' flush' : '');
-  }
-
-  return flush ? 'flush' : 'high card';
-}
 
 
 

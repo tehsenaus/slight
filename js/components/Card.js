@@ -16,13 +16,14 @@ const SUIT_NAMES = {
   
 export default class Card extends Component {
   render() {
-    const {card} = this.props,
+    const {card, faceDown} = this.props,
     	[c,s] = card;
 
     return (
-      <img {...this.props} className="card" src={"./images/cards/"+(
-        CARD_NAMES[c] || c
-      )+"_of_"+SUIT_NAMES[s]+".png"} />
+      <img {...this.props} className="card" src={"./images/cards/"
+        +(faceDown ? 'back' : (
+          (CARD_NAMES[c] || c)+"_of_"+SUIT_NAMES[s]
+        )) +".png" } />
     );
   }
 }
